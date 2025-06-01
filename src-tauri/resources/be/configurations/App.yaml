@@ -1,0 +1,37 @@
+App:
+  Port: 3003
+  IP: "0.0.0.0"
+
+Database:
+  Host: "127.0.0.1"
+  Port: 3306
+  Username: "root"
+  Password: ""
+  DBName: "ajinomoto_desktop"
+
+Files:
+  Path: "./files"
+
+Jwt:
+  Secret: "e9d6cc16-af40-4545-af25-d038592d39ae"
+
+Interval:
+  Exit: 100000
+
+isDev: true
+isLog: false
+
+Logging:
+  File:
+    MaxSize: 50 # Max size in megabytes before log file is rotated
+    MaxBackups: 10 # Max number of backup log files
+    MaxAge: 14 # Max number of days to retain old log files
+    Compress: true # Whether to compress old log files
+  Path: "./files/logs"
+  isDev: true # Whether to use development or production logging settings
+
+Temp:
+  Name: "-"
+
+# true if using syncronizer, search for createQeueuJob function for context
+IsCreateQueueJob: false

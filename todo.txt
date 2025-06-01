@@ -1,0 +1,120 @@
+Node I:
+
+    1. When connected to scale service, navbar cloud icon changed to green ✅
+    2. Font size for username, password are using same size ✅
+    3. App version auto generated and auto increment from prebuild script ✅
+    4. Footer shows customer owned a license, from endpoint: /license/name
+
+Node II:
+
+    1. Change thumbnail work order execution: "Scan Work Order Number. Formulation Code, and Order Quantity" ✅
+    2. Add Start Icon before start word on a button ✅
+
+Node III:
+
+    1. Change Icon of master screen to Database Icon ✅
+    2. Ordering the sidebar: Home, Master, Report, Setting ✅
+    3. Remove fullscreen button ✅
+    4. Change product name position to top, "raw material" to productCode ✅
+    5. Order qty: comes from requestedMass not a formulationMass ✅
+    6. Actual / Plan Qty, not this one Actual / Max ✅
+    7. All number values contains fractional digit and can be changed in setting ✅
+
+Node IV:
+
+    1. After all raw materials are done, show the modal indicates the weighing is done ✅
+    2. Change All Materials are done to "Execute another Formulation Work Order" Button ✅
+
+Node V:
+
+    1. Change New Product to Add New Product ✅
+    2. Change placeholders ✅
+    3. Add icon save to create product button ✅
+    4. Remove multiplier in unit selection ✅
+    5. Disable product form suggestion
+
+Node VI:
+
+    1. Implement pagination on Master Product ✅
+    2. Remove icon after "edit" ✅
+    3. Center total ingredient table ✅
+
+Node VII:
+
+    1. Change form placeholders ✅
+    2. Default value status is active ✅
+    3. Remove import button at create new formulation ✅
+
+Node IX:
+    1. Implement auto save time - weight in tolerance, selection yes or no ✅
+    2. Auto save time - weight in tolerance, input ✅
+    3. Implement auto save time - weight of tolerance, selection yes or no ✅
+    4. Auto save time - weight out of tolerance, input ✅
+
+Node X:
+    1. Implement filter, by date, by formulation name, by status ✅
+    2. Take out column must follow order, total ingredient ✅
+    3. Implement pagination 
+    4. Add column order status ✅
+
+
+- Hint point report
+    Order Status: status is equal to 2 (completed), approval status is equal to 1 (approved)
+
+Revision Foom Lab III
+
+- Remove Keyboard for user, and enable it for admin ✅
+- Add Button delete for scan product code ✅
+- Add user operator for report ✅
+- Before start weighing deactivate scale bar ✅
+- CRUD user ✅
+- CRUD tolerance grouping ✅
+- Print logger mass ✅
+- Download reports ✅
+- Show toast re-login when token is expired ✅
+- virtual keyboard: 
+    1. Dialog Scan WO
+    2. Master Product
+    3. Master Formulation
+    4. Master User
+TODO: 
+
+- hide dialog done all materials for admin ✅
+- hide button approve reject if done all ✅
+
+
+Setting: 
+1. Implement choice for modal workorder ✅
+2. Multi Scale connection ✅
+
+Login: 
+1. Search on username ✅
+
+Home:
+1. Empty State Page ❌
+2. New Modal Workorder ✅
+3. Manual verifyproduct + remove Parsing Expired Date at verify Product ✅
+4. Websocket lineverificator ✅
+5. Websocket scale swticher ✅ 
+    -> Current Condition: handling 1 connection from 1 source setting
+    -> Expected Condition: handling 1 connection with a switch from multiple source setting 
+    -> How to change it easily ? 
+        0. Verify if scale is assigned and length > 0.
+        1. Add global index variable with 0 as the default.
+        2. Modify connectToScaleWebsocket, detect first if ws is open or not, if it's open then close the last ws first.
+        3. Add index when getting the scaleDeviceId. Reconnect.
+6. Remove parsed expdate in verify product ✅
+7. Notes pop up ✅
+8. Batch pop up and assignment ✅
+9. Instruction pop up ✅
+10. Change scanner to onscan.js (not urgent) ❌
+11. Remove Touch action ✅
+ 
+Website:
+1. Create Workorder ✅ 
+    ✅ (Bug: tambahkan refetch setelah create.)
+2. Import Workorder ❌
+
+Bug:
+1. Must follow order sometimes not correct.
+2. Product scan pop up is not auto pop uping.

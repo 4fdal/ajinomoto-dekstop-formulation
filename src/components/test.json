@@ -1,0 +1,304 @@
+[
+  {
+    "id": "0f35331e-04bf-4026-9f84-570289da2336",
+    "formulationCode": "FC-00136",
+    "formulationName": "fsdfa",
+    "totalMass": 2,
+    "totalIngredient": 1,
+    "mustFollowOrder": true,
+    "status": 0,
+    "createdAt": "2024-07-09T14:32:17.269+07:00",
+    "updatedAt": "2024-07-09T14:32:17.269+07:00",
+    "FormulationLines": [
+      {
+        "id": "ae2f6c10-d696-4625-95a1-04e3c3734bf4",
+        "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+        "FormulationHeaderId": "0f35331e-04bf-4026-9f84-570289da2336",
+        "productCode": "PROD0012",
+        "productName": "ProductA",
+        "unit": "",
+        "targetMass": 2,
+        "min": 1,
+        "max": 3,
+        "toleranceType": "%",
+        "maxAllowedWeighingQty": 1,
+        "implementToleranceGrouping": true,
+        "instruction": "Hello world",
+        "createdAt": "2024-07-09T14:32:17.271+07:00",
+        "updatedAt": "2024-07-09T14:32:17.271+07:00",
+        "ToleranceGroupingHeader": {
+          "id": "24e4de37-020d-4330-ad75-de86d88aa82d",
+          "groupingName": "Test Group",
+          "defaultToleranceType": "",
+          "defaultMin": 0,
+          "defaulMax": 0,
+          "createdAt": "2024-07-09T09:53:46.811+07:00",
+          "updatedAt": "2024-07-09T09:53:46.811+07:00",
+          "ToleranceGroupingLines": [
+            {
+              "id": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "lowerRange": 0,
+              "upperRange": 50,
+              "toleranceType": "mass",
+              "min": 1,
+              "max": 1,
+              "createdAt": "2024-07-09T09:53:46.813+07:00",
+              "updatedAt": "2024-07-09T09:53:46.813+07:00"
+            },
+            {
+              "id": "988dd572-e115-4414-bbfd-17b4264fde8d",
+              "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "lowerRange": 51,
+              "upperRange": 1000,
+              "toleranceType": "mass",
+              "min": 10,
+              "max": 10,
+              "createdAt": "2024-07-09T09:53:46.813+07:00",
+              "updatedAt": "2024-07-09T09:53:46.813+07:00"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "24e4de37-020d-4330-ad75-de86d88aa82d",
+    "formulationCode": "FC-001",
+    "formulationName": "Formulasi Test",
+    "totalMass": 100,
+    "totalIngredient": 2,
+    "mustFollowOrder": true,
+    "status": 0,
+    "createdAt": "2024-07-09T09:53:46.815+07:00",
+    "updatedAt": "2024-07-09T09:53:46.815+07:00",
+    "FormulationLines": [
+      {
+        "id": "24e4de37-020d-4330-ad75-de86d88aa82d",
+        "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+        "FormulationHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+        "productCode": "PROD0012",
+        "productName": "ProductA",
+        "unit": "kg",
+        "targetMass": 10,
+        "min": 10,
+        "max": 10,
+        "toleranceType": "%",
+        "maxAllowedWeighingQty": 150,
+        "implementToleranceGrouping": false,
+        "instruction": "Test Formulasi Instruction",
+        "createdAt": "2024-07-09T09:53:46.817+07:00",
+        "updatedAt": "2024-07-09T09:53:46.817+07:00",
+        "ToleranceGroupingHeader": {
+          "id": "24e4de37-020d-4330-ad75-de86d88aa82d",
+          "groupingName": "Test Group",
+          "defaultToleranceType": "",
+          "defaultMin": 0,
+          "defaulMax": 0,
+          "createdAt": "2024-07-09T09:53:46.811+07:00",
+          "updatedAt": "2024-07-09T09:53:46.811+07:00",
+          "ToleranceGroupingLines": [
+            {
+              "id": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "lowerRange": 0,
+              "upperRange": 50,
+              "toleranceType": "mass",
+              "min": 1,
+              "max": 1,
+              "createdAt": "2024-07-09T09:53:46.813+07:00",
+              "updatedAt": "2024-07-09T09:53:46.813+07:00"
+            },
+            {
+              "id": "988dd572-e115-4414-bbfd-17b4264fde8d",
+              "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "lowerRange": 51,
+              "upperRange": 1000,
+              "toleranceType": "mass",
+              "min": 10,
+              "max": 10,
+              "createdAt": "2024-07-09T09:53:46.813+07:00",
+              "updatedAt": "2024-07-09T09:53:46.813+07:00"
+            }
+          ]
+        }
+      },
+      {
+        "id": "988dd572-e115-4414-bbfd-17b4264fde8d",
+        "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+        "FormulationHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+        "productCode": "PROD0013",
+        "productName": "ProductB",
+        "unit": "kg",
+        "targetMass": 90,
+        "min": 1,
+        "max": 1,
+        "toleranceType": "%",
+        "maxAllowedWeighingQty": 150,
+        "implementToleranceGrouping": true,
+        "instruction": "Test Formulasi Instruction",
+        "createdAt": "2024-07-09T09:53:46.818+07:00",
+        "updatedAt": "2024-07-09T09:53:46.818+07:00",
+        "ToleranceGroupingHeader": {
+          "id": "24e4de37-020d-4330-ad75-de86d88aa82d",
+          "groupingName": "Test Group",
+          "defaultToleranceType": "",
+          "defaultMin": 0,
+          "defaulMax": 0,
+          "createdAt": "2024-07-09T09:53:46.811+07:00",
+          "updatedAt": "2024-07-09T09:53:46.811+07:00",
+          "ToleranceGroupingLines": [
+            {
+              "id": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "lowerRange": 0,
+              "upperRange": 50,
+              "toleranceType": "mass",
+              "min": 1,
+              "max": 1,
+              "createdAt": "2024-07-09T09:53:46.813+07:00",
+              "updatedAt": "2024-07-09T09:53:46.813+07:00"
+            },
+            {
+              "id": "988dd572-e115-4414-bbfd-17b4264fde8d",
+              "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "lowerRange": 51,
+              "upperRange": 1000,
+              "toleranceType": "mass",
+              "min": 10,
+              "max": 10,
+              "createdAt": "2024-07-09T09:53:46.813+07:00",
+              "updatedAt": "2024-07-09T09:53:46.813+07:00"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "91c79326-29a7-4ec0-a3fc-6efa3dd2a63e",
+    "formulationCode": "FC-00133",
+    "formulationName": "testing formulation",
+    "totalMass": 2,
+    "totalIngredient": 1,
+    "mustFollowOrder": true,
+    "status": 0,
+    "createdAt": "2024-07-09T14:18:53.168+07:00",
+    "updatedAt": "2024-07-09T14:18:53.168+07:00",
+    "FormulationLines": [
+      {
+        "id": "7a49baa8-5c32-43f9-8978-a42fabed043c",
+        "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+        "FormulationHeaderId": "91c79326-29a7-4ec0-a3fc-6efa3dd2a63e",
+        "productCode": "PROD0012",
+        "productName": "ProductA",
+        "unit": "",
+        "targetMass": 2,
+        "min": 20,
+        "max": 30,
+        "toleranceType": "mass",
+        "maxAllowedWeighingQty": 1,
+        "implementToleranceGrouping": true,
+        "instruction": "instruction",
+        "createdAt": "2024-07-09T14:18:53.169+07:00",
+        "updatedAt": "2024-07-09T14:18:53.169+07:00",
+        "ToleranceGroupingHeader": {
+          "id": "24e4de37-020d-4330-ad75-de86d88aa82d",
+          "groupingName": "Test Group",
+          "defaultToleranceType": "",
+          "defaultMin": 0,
+          "defaulMax": 0,
+          "createdAt": "2024-07-09T09:53:46.811+07:00",
+          "updatedAt": "2024-07-09T09:53:46.811+07:00",
+          "ToleranceGroupingLines": [
+            {
+              "id": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "lowerRange": 0,
+              "upperRange": 50,
+              "toleranceType": "mass",
+              "min": 1,
+              "max": 1,
+              "createdAt": "2024-07-09T09:53:46.813+07:00",
+              "updatedAt": "2024-07-09T09:53:46.813+07:00"
+            },
+            {
+              "id": "988dd572-e115-4414-bbfd-17b4264fde8d",
+              "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "lowerRange": 51,
+              "upperRange": 1000,
+              "toleranceType": "mass",
+              "min": 10,
+              "max": 10,
+              "createdAt": "2024-07-09T09:53:46.813+07:00",
+              "updatedAt": "2024-07-09T09:53:46.813+07:00"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "d99efefc-a166-424c-b0cb-582e33ece300",
+    "formulationCode": "FC-00134",
+    "formulationName": "testing formulationffff",
+    "totalMass": 2,
+    "totalIngredient": 1,
+    "mustFollowOrder": true,
+    "status": 0,
+    "createdAt": "2024-07-09T14:21:12.746+07:00",
+    "updatedAt": "2024-07-09T14:21:12.746+07:00",
+    "FormulationLines": [
+      {
+        "id": "13c2163b-10e2-46ff-9964-46497eac61d7",
+        "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+        "FormulationHeaderId": "d99efefc-a166-424c-b0cb-582e33ece300",
+        "productCode": "PROD0012",
+        "productName": "ProductA",
+        "unit": "",
+        "targetMass": 2,
+        "min": 1,
+        "max": 3,
+        "toleranceType": "mass",
+        "maxAllowedWeighingQty": 1,
+        "implementToleranceGrouping": true,
+        "instruction": "fdsfdsafsa",
+        "createdAt": "2024-07-09T14:21:12.748+07:00",
+        "updatedAt": "2024-07-09T14:21:12.748+07:00",
+        "ToleranceGroupingHeader": {
+          "id": "24e4de37-020d-4330-ad75-de86d88aa82d",
+          "groupingName": "Test Group",
+          "defaultToleranceType": "",
+          "defaultMin": 0,
+          "defaulMax": 0,
+          "createdAt": "2024-07-09T09:53:46.811+07:00",
+          "updatedAt": "2024-07-09T09:53:46.811+07:00",
+          "ToleranceGroupingLines": [
+            {
+              "id": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "lowerRange": 0,
+              "upperRange": 50,
+              "toleranceType": "mass",
+              "min": 1,
+              "max": 1,
+              "createdAt": "2024-07-09T09:53:46.813+07:00",
+              "updatedAt": "2024-07-09T09:53:46.813+07:00"
+            },
+            {
+              "id": "988dd572-e115-4414-bbfd-17b4264fde8d",
+              "ToleranceGroupingHeaderId": "24e4de37-020d-4330-ad75-de86d88aa82d",
+              "lowerRange": 51,
+              "upperRange": 1000,
+              "toleranceType": "mass",
+              "min": 10,
+              "max": 10,
+              "createdAt": "2024-07-09T09:53:46.813+07:00",
+              "updatedAt": "2024-07-09T09:53:46.813+07:00"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

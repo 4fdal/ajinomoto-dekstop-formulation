@@ -1,0 +1,16 @@
+App:
+  Port: 
+  IP:
+
+Database:
+  Host: 
+  Port: 
+  Username: 
+  Password:
+  DBName: 
+
+Files:
+  Path:
+
+Jwt:
+  Secret:
