@@ -182,7 +182,7 @@ export async function getReportFormulationTableSelectWorkOrder(
     querySearch.formulation_status !== null &&
     querySearch.formulation_status !== ''
   ) {
-    url += `&ignore_line_status=true&formulation_status=${querySearch.formulation_status}`;
+    url += `&ignore_line_status=true&status=${querySearch.formulation_status}`;
   } else {
     url +=
       '&exclude_formulation_status=2&also_exclude_formulation_status=3';

@@ -10,6 +10,7 @@ import { Store } from 'tauri-plugin-store-api';
 import {
   connectToGuardWebSocket,
   connectToScaleWebSocket,
+  sendCommand,
 } from '~/actions/websocket.action';
 import { DetailFormulationByMaterialList } from './DetailFormulationByMaterialList';
 import { NoScanFormulation } from './NoScanFormulation';
@@ -328,7 +329,7 @@ export default function Homepage() {
   return (
     <>
       <ContainerLayout className="flex h-full w-full flex-col justify-start overflow-y-auto pr-4">
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-row items-start justify-between">
           <div className="flex flex-row justify-start gap-2">
             <div className="flex rounded-xl border p-5 font-bold shadow-sm">
               {!isWaitWeight ? (
@@ -362,7 +363,16 @@ export default function Homepage() {
             <RefreshCw size={15} />
           </Button>
         </div>
-        <div className="mt-10 flex flex-col gap-2">
+        <div className="mt-5 flex flex-col gap-2">
+          <div className="flex flex-row items-end justify-end gap-1">
+            <span className="font-mono text-4xl italic text-gray-500">
+              {scaleValue?.toFixed(4)}
+            </span>
+            <span className="text-3xl italic text-gray-500">
+              gr
+            </span>
+          </div>
+
           <div className="flex flex-row justify-between">
             <div className="flex flex-row items-center gap-2">
               <span className="rounded-lg bg-gray-100 p-2">
@@ -382,7 +392,9 @@ export default function Homepage() {
             <div className="flex flex-row items-end justify-end">
               <p>
                 <span className="text-gray-500">
-                  {!isWaitWeight ? scaleValue : 0}
+                  {(!isWaitWeight ? scaleValue : 0).toFixed(
+                    4,
+                  )}
                 </span>
                 /
                 <span>
@@ -533,13 +545,34 @@ export default function Homepage() {
         </div>
         <div className="mt-10 flex flex-row items-center justify-between gap-5">
           <div className="grid grid-cols-3 gap-1">
-            <Button className="rounded-full bg-green-400 hover:bg-green-300">
+            <Button
+              onClick={() => {
+                sendCommand('Z@', () => {
+                  toast.success('Zero terkirim');
+                });
+              }}
+              className="rounded-full bg-green-400 hover:bg-green-300"
+            >
               Z
             </Button>
-            <Button className="rounded-full bg-yellow-400 hover:bg-yellow-300">
+            <Button
+              onClick={() => {
+                sendCommand('T@', () => {
+                  toast.success('Tare terkirim');
+                });
+              }}
+              className="rounded-full bg-yellow-400 hover:bg-yellow-300"
+            >
               T
             </Button>
-            <Button className="rounded-full bg-red-400 hover:bg-red-300">
+            <Button
+              onClick={() => {
+                sendCommand('C@', () => {
+                  toast.success('Clear terkirim');
+                });
+              }}
+              className="rounded-full bg-red-400 hover:bg-red-300"
+            >
               C
             </Button>
           </div>
