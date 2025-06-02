@@ -1,11 +1,18 @@
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
-import { checkStatusOrder, encodeObjectToBase64, getUserRole } from '~/lib/helpers';
+import {
+  checkStatusOrder,
+  encodeObjectToBase64,
+  getUserRole,
+} from '~/lib/helpers';
 import { DialogReportLogger } from './DialogReportLogger';
 import { getReportFormulationById } from '~/actions/reports.action';
 import { Badge } from '~/components/ui/badge';
 import { cn } from '~/lib/utils';
-import { FormulationLine, RFormulationReports } from '~/lib/types/responses';
+import {
+  FormulationLine,
+  RFormulationReports,
+} from '~/lib/types/responses';
 import { useState } from 'react';
 
 import {
@@ -50,11 +57,26 @@ import {
 import { Button } from '~/components/ui/button';
 import { WorkOrderSchema } from '~/lib/types/schemas';
 import { toast } from 'sonner';
-import { useFormulationReport, useUserAuthStore, useUserDisplayStore } from '~/lib/store/store';
+import {
+  useFormulationReport,
+  useUserAuthStore,
+  useUserDisplayStore,
+} from '~/lib/store/store';
 import { createFormulationReportsV2 } from '~/actions/formulation.action';
 import { z } from 'zod';
+import {
+  FormulationReportHeader,
+  FormulationReportLine,
+} from '~/lib/types/types';
 
-const fields = [
+type Field = {
+  label: string;
+  id: string;
+  value?: string;
+  render?: (item: any) => string;
+};
+
+const fields: Field[] = [
   {
     label: 'Formulation Name',
     id: 'name',
@@ -63,7 +85,9 @@ const fields = [
   {
     label: 'Total Ingredients',
     id: 'totalIngredients1',
-    value: 'totalIngredient',
+    render: (data: FormulationReportHeader) => {
+      return data.totalIngredient;
+    },
   },
   {
     label: 'Status',
@@ -76,14 +100,18 @@ const fields = [
     value: 'formulationCode',
   },
   {
-    label: 'Multiplier',
-    id: 'multiplier',
-    value: 'multiplier',
+    label: 'Total Weight Formula',
+    id: 'totalWeightFormula',
+    render: (data: FormulationReportHeader) => {
+      return (data.totalWeightFormula ?? 0).toFixed(4);
+    },
   },
   {
-    label: 'Must Follow Order',
-    id: 'mustFollowOrder',
-    value: 'mustFollowOrder',
+    label: 'Actual/Target',
+    id: 'actualTarget',
+    render: (data: FormulationReportHeader) => {
+      return `${(data.actualMass ?? 0).toFixed(4)}/${(data.requestedMass ?? 0).toFixed(4)}`;
+    },
   },
 ] as const;
 
@@ -165,10 +193,12 @@ export function DialogDetailReport({
       const statusOrder = checkStatusOrder(res.status);
 
       if (
-        ((isEnableOutweightRejection && isApprovalHasAProblem) &&
+        (isEnableOutweightRejection &&
+          isApprovalHasAProblem &&
           statusOrder == 'waiting_implementation' &&
           getUserRole() !== 'Admin') ||
-        ((isEnableOutweightRejection && isApprovalHasAProblem) &&
+        (isEnableOutweightRejection &&
+          isApprovalHasAProblem &&
           statusOrder == 'on_progress' &&
           getUserRole() !== 'Admin')
       ) {
@@ -177,15 +207,17 @@ export function DialogDetailReport({
         setIsUserScanMaterialReports(true);
         setFormulationReports(res.FormulationReportLines);
         // setFormulationCodeStore(res.formulationCode);
-        setFormulationCodeStore(
-          data.orderNumber,
-        );
+        setFormulationCodeStore(data.orderNumber);
         setTempFormulationCode(res.formulationCode);
         setFormulationNameStore(res.formulationName);
         setFormulationMass(res.formulationMass);
         setRequestedMass(res.requestedMass);
 
-        if (res?.mustFollowOrder && getUserRole() !== 'Admin' && !isDoneAll) {
+        if (
+          res?.mustFollowOrder &&
+          getUserRole() !== 'Admin' &&
+          !isDoneAll
+        ) {
           setMustFollowOrder(res?.mustFollowOrder);
           setIsOpenDialogScanProduct(true);
           navigate(
@@ -223,10 +255,9 @@ export function DialogDetailReport({
       formulation_name: data.formulationName,
       order_qty: `${data.requestedMass}`,
       work_order: data.orderNumber,
-      multiplier: ""
+      multiplier: '',
     });
   }
-
 
   return (
     <AlertDialog defaultOpen>
@@ -258,7 +289,10 @@ export function DialogDetailReport({
                           ? getStatusReport(
                               data?.[field.value],
                             )
-                          : data?.[field.value] || ''
+                          : field?.render
+                            ? field?.render(data)
+                            : data?.[field.value ?? 'id'] ||
+                              ''
                       }
                       className="border-gray-300 disabled:border disabled:text-black"
                     />
@@ -279,13 +313,16 @@ export function DialogDetailReport({
                       id={field.id}
                       readOnly
                       value={
-                        field?.value == 'mustFollowOrder'
-                          ? data?.[field?.value]
-                            ? 'true'
-                            : false
-                          : data?.[field.value] || ''
+                        field.value === 'status'
+                          ? getStatusReport(
+                              data?.[field.value],
+                            )
+                          : field?.render
+                            ? field?.render(data)
+                            : data?.[field.value ?? 'id'] ||
+                              ''
                       }
-                      className="border-black-300 disabled:border disabled:text-black"
+                      className="border-gray-300 disabled:border disabled:text-black"
                     />
                   </div>
                 ))}
@@ -317,43 +354,45 @@ export function DialogDetailReport({
                   </TableCaption>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Material Code</TableHead>
+                      <TableHead>Application</TableHead>
                       <TableHead>Material Name</TableHead>
-                      <TableHead className="w-[200px]">
-                        Instruction
+                      <TableHead className="text-center">
+                        Max
+                      </TableHead>
+                      <TableHead className="text-center">
+                        Min
                       </TableHead>
                       <TableHead className="text-center">
                         Tolerance Grouping
                       </TableHead>
-                      {/* <TableHead className="text-right">
-                        Max
-                      </TableHead> */}
-                      {/* <TableHead className="text-right">
-                        Min
-                      </TableHead> */}
-                      <TableHead className="text-right">
+
+                      <TableHead className="text-left">
                         Actual/Target
                       </TableHead>
-                      <TableHead className="text-right">
+                      <TableHead className="text-left">
                         Logger
                       </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
+                    {console.log(data)}
                     {data?.FormulationReportLines?.map(
                       (
-                        item: FormulationLine,
+                        item: FormulationReportLine,
                         idx: number,
                       ) => (
                         <TableRow key={idx}>
                           <TableCell>
-                            {item.productCode}
+                            {item.application.name}
                           </TableCell>
                           <TableCell>
-                            {item.productName}
+                            {item.materialName}
                           </TableCell>
-                          <TableCell>
-                            {item.instruction}
+                          <TableCell className="text-center">
+                            {(item.min ?? 0).toFixed(4)}
+                          </TableCell>
+                          <TableCell className="text-center">
+                            {(item.max ?? 0).toFixed(4)}
                           </TableCell>
                           <TableCell className="text-center">
                             <Badge
@@ -361,11 +400,11 @@ export function DialogDetailReport({
                                 'bg-green-200 text-green-500',
                                 {
                                   'bg-red-200 text-red-500':
-                                    !item.implementToleranceGrouping,
+                                    !item.globalTolerance,
                                 },
                               )}
                             >
-                              {item.implementToleranceGrouping
+                              {item.globalTolerance
                                 ? 'true'
                                 : 'false'}
                             </Badge>
@@ -376,10 +415,10 @@ export function DialogDetailReport({
                           <TableCell className="text-right">
                             {item.min}
                           </TableCell> */}
-                          <TableCell className="text-right">
-                          {`${item?.actualMass?.toFixed(3)}/${item?.targetMass?.toFixed(3)} ${item.unit}`}
+                          <TableCell className="text-left">
+                            {`${item?.actualMass?.toFixed(4)}/${item?.targetMass?.toFixed(4)} ${item.unit}`}
                           </TableCell>
-                          <TableCell className="text-right">
+                          <TableCell className="text-left">
                             <DialogReportLogger
                               reportLoggers={
                                 // @ts-ignore
@@ -407,14 +446,21 @@ export function DialogDetailReport({
           </div>
           <Button
             className={cn(
-              'flex items-center gap-4 w-[200px] bg-blue-500 hover:bg-blue-400',
-              { 'bg-gray-400 cursor-not-allowed': data?.status !== 0 && data?.status !== 1 } 
+              'flex w-[200px] items-center gap-4 bg-blue-500 hover:bg-blue-400',
+              {
+                'cursor-not-allowed bg-gray-400':
+                  data?.status !== 0 && data?.status !== 1,
+              },
             )}
             onClick={() => onTimbang()}
-            disabled={data?.status !== 0 && data?.status !== 1}
+            disabled={
+              data?.status !== 0 && data?.status !== 1
+            }
           >
             <ScaleIcon />
-            {data?.status === 0 || data?.status === 1 ? 'Timbang' : 'Sudah Selesai'} 
+            {data?.status === 0 || data?.status === 1
+              ? 'Timbang'
+              : 'Sudah Selesai'}
           </Button>
         </div>
       </AlertDialogContent>

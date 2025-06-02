@@ -105,7 +105,7 @@ export async function createFormulationReportsV2(
   try {
     const formattedRequestedMass = data.order_qty.replace(',', '.') // prettier-ignore
     const response = await API.protectedProcedure({
-      url: '/formulation-reports',
+      url: '/formulation-report',
       method: 'POST',
       data: {
         formulationCode: data.formulation_code,
@@ -166,7 +166,7 @@ export async function patchFormulationReportsById({
   isDisableRejection: boolean;
 }) {
   try {
-    let url = `/formulation-reports/${id}`;
+    let url = `/formulation-report/${id}`;
     if (isDisableRejection) {
       url += '?disableRejection=true';
     }
@@ -274,7 +274,7 @@ export async function deleteMasterFormulation(id: string) {
 export async function getFormulationReports() {
   try {
     const response = await API.protectedProcedure({
-      url: `/formulation-reports`,
+      url: `/formulation-report`,
     });
 
     if (response.data) {
@@ -341,7 +341,7 @@ export async function approveRejectReportLineAction({
 }) {
   try {
     const response = await API.protectedProcedure({
-      url: `/formulation-reports/approval/${reportLineId}`,
+      url: `/formulation-report/approval/${reportLineId}`,
       method: 'PUT',
       data: {
         approval: approvalStatus,

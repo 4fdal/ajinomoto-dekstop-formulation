@@ -11,7 +11,6 @@ const PrintReportPage = forwardRef(
     },
     ref,
   ) => {
-
     let newestCreatedAt = moment(props.itemContents?.FormulationReportLines[0]?.FormulationReportWeighingLoggers[0]?.createdAt) // prettier-ignore
     let oldestCreatedAt = moment(props.itemContents?.FormulationReportLines[0]?.FormulationReportWeighingLoggers[0]?.createdAt) // prettier-ignore
 
@@ -117,7 +116,9 @@ const PrintReportPage = forwardRef(
 
     return (
       // @ts-ignore
+
       <div className="p-4" ref={ref}>
+        
         <div className="border p-4">
           <div className="mb-4 flex items-start justify-between">
             <div className="flex flex-col">

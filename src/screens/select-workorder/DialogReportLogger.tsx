@@ -27,7 +27,6 @@ export function DialogReportLogger({
 }: {
   reportLoggers: ReportLogger[];
 }) {
-  console.log('reportLoggers', reportLoggers);
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -79,7 +78,7 @@ export function DialogReportLogger({
               {reportLoggers.map((item: ReportLogger) => (
                 <TableRow key={item.id}>
                   <TableCell className="text-center font-medium">
-                    {item.mass?.toFixed(3)}
+                    {item.mass?.toFixed(4)}
                   </TableCell>
                   <TableCell>
                     {item.productBatchNumber}

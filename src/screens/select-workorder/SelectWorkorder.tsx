@@ -59,6 +59,7 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 import { toast } from 'sonner';
+import { FormulationReportHeader } from '~/lib/types/types';
 
 const Status = ({ no }: { no: number }) => {
   const getStatusReport = () => {
@@ -445,60 +446,69 @@ export default function Report() {
                   <TableHead className="w-[100px]">
                     NO
                   </TableHead>
-                  <TableHead>Work Order Name</TableHead>
-                  <TableHead>Formulation Name</TableHead>
+                  <TableHead>
+                    Batch Production Code
+                  </TableHead>
                   <TableHead>Formulation Code</TableHead>
-                  <TableHead>Multiplier</TableHead>
+                  <TableHead>Formulation Name</TableHead>
+                  <TableHead>Total Material</TableHead>
                   <TableHead>Actual/Target </TableHead>
-                  <TableHead>Schedule</TableHead>
                   <TableHead className="text-center">
                     Status
                   </TableHead>
+                  <TableHead>Created At</TableHead>
                   <TableHead>Action</TableHead>
                 </TableRow>
               </TableHeader>
 
               <TableBody>
                 {data?.rows
-                  ?.sort(
+                  // ?.sort(
+                  //   (
+                  //     a: {
+                  //       createdAt: string | number | Date;
+                  //     },
+                  //     b: {
+                  //       createdAt: string | number | Date;
+                  //     },
+                  //   ) =>
+                  //     new Date(a.createdAt).getTime() -
+                  //     new Date(b.createdAt).getTime(),
+                  // )
+                  .map(
                     (
-                      a: {
-                        createdAt: string | number | Date;
-                      },
-                      b: {
-                        createdAt: string | number | Date;
-                      },
-                    ) =>
-                      new Date(a.createdAt).getTime() -
-                      new Date(b.createdAt).getTime(),
-                  )
-                  .map((item: any, idx: number) => (
-                    <React.Fragment key={idx}>
-                      <TableRow key={item.id}>
-                        <TableCell>{idx + 1}</TableCell>
-                        <TableCell>
-                          {item.orderNumber}
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {item.formulationName}
-                        </TableCell>
-                        <TableCell>
-                          {item.formulationCode}
-                        </TableCell>
-                        <TableCell>
-                          {`${item.multiplier}`}
-                        </TableCell>
-                        <TableCell>
-                          {`${item?.actualMass?.toFixed(3)}/${item?.requestedMass?.toFixed(3)}`}
-                        </TableCell>
-                        <TableCell>
-                          {convertToDate(item.dateSchedule)}
-                        </TableCell>
-                        <TableCell className="w-[150px]">
-                          <Status no={item.status} />
-                        </TableCell>
-                        <TableCell className="grid cursor-pointer grid-cols-1 gap-2">
-                          {/* <Button
+                      item: FormulationReportHeader,
+                      idx: number,
+                    ) => (
+                      <React.Fragment key={idx}>
+                        <TableRow key={item.id}>
+                          <TableCell>{idx + 1}</TableCell>
+                          <TableCell>
+                            {item.BatchProduction.code}
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            {item.formulationName}
+                          </TableCell>
+                          <TableCell>
+                            {item.formulationCode}
+                          </TableCell>
+                          <TableCell>
+                            {`${item.totalIngredient}`}
+                          </TableCell>
+                          <TableCell>
+                            {`${item?.actualMass?.toFixed(3)}/${item?.requestedMass?.toFixed(3)}`}
+                          </TableCell>
+
+                          <TableCell className="w-[150px]">
+                            <Status no={item.status} />
+                          </TableCell>
+                          <TableCell>
+                            {moment(item.createdAt).format(
+                              'YYYY-MM-DD HH:mm:ss',
+                            )}
+                          </TableCell>
+                          <TableCell className="grid cursor-pointer grid-cols-1 gap-2">
+                            {/* <Button
                             className={cn(
                               'flex items-center gap-2 bg-blue-500 hover:bg-blue-400',
                             )}
@@ -506,29 +516,30 @@ export default function Report() {
                             <ScaleIcon />
                             Timbang
                           </Button> */}
-                          <Button
-                            onClick={() =>
-                              navigate(
-                                `?id_detail=${item.id}`,
-                              )
-                            }
-                            className={cn(
-                              'flex items-center gap-2 bg-blue-500 hover:bg-blue-400',
-                            )}
-                          >
-                            <SearchSlashIcon />
-                            Detail
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    </React.Fragment>
-                  ))}
+                            <Button
+                              onClick={() =>
+                                navigate(
+                                  `?id_detail=${item.id}`,
+                                )
+                              }
+                              className={cn(
+                                'flex items-center gap-2 bg-blue-500 hover:bg-blue-400',
+                              )}
+                            >
+                              <SearchSlashIcon />
+                              Detail
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      </React.Fragment>
+                    ),
+                  )}
               </TableBody>
             </Table>
 
             <div
               className={cn('', {
-                hidden: data?.rows?.length < 1,
+                hidden: (data?.rows?.length ?? 0) < 1,
               })}
             >
               <PaginationTable

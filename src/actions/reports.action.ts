@@ -1,4 +1,7 @@
-import { WeighingLoggerRequest } from './../lib/types/types';
+import {
+  FormulationReportHeader,
+  WeighingLoggerRequest,
+} from './../lib/types/types';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
@@ -55,7 +58,7 @@ export async function updateReportFormulationLines(
 export async function getOriginalReportFormulations() {
   try {
     const response = await API.protectedProcedure({
-      url: '/formulation-reports',
+      url: '/formulation-report',
     });
 
     if (response.status == 200) {
@@ -82,7 +85,7 @@ export async function getReportFormulations(
   setDownloadUrl: any,
 ) {
   const today = moment().format('YYYY-MM-DD');
-  let url = `/formulation-reports?page=${page}&page_size=${pageSize}&search=${searchTerm}`;
+  let url = `/formulation-report?page=${page}&page_size=${pageSize}&search=${searchTerm}`;
   if (
     dateFilter.formatted_from !== '' &&
     dateFilter.formatted_to !== '' &&
@@ -126,7 +129,7 @@ export async function getReportFormulationModals(
   const today = moment()
     .endOf('day')
     .format('YYYY-MM-DD HH:mm:ss');
-  let url = `/formulation-reports?page=1&page_size=999999&exclude_formulation_status=2&also_exclude_formulation_status=3&schedule_end_date=${today}&product_whitelist=${whitelistedProduct?.value}`;
+  let url = `/formulation-report?page=1&page_size=999999&exclude_formulation_status=2&also_exclude_formulation_status=3&schedule_end_date=${today}&product_whitelist=${whitelistedProduct?.value}`;
 
   if (searchTerm) {
     url += `&search=${searchTerm}`;
@@ -158,7 +161,13 @@ export async function getReportFormulationTableSelectWorkOrder(
     formulation_status: null | string;
     work_order: null | string;
   },
-) {
+): Promise<
+  | {
+      count: number;
+      rows: FormulationReportHeader[];
+    }
+  | undefined
+> {
   const whitelistedProduct = await store.get<{
     value: string;
   }>('tauri_whitelisted_product');
@@ -166,7 +175,8 @@ export async function getReportFormulationTableSelectWorkOrder(
   const today = moment()
     .endOf('day')
     .format('YYYY-MM-DD HH:mm:ss');
-  let url = `/formulation-reports?page=${page}&page_size=${pageSize}&product_whitelist=${whitelistedProduct?.value}`;
+  // let url = `/formulation-report?page=${page}&page_size=${pageSize}&product_whitelist=${whitelistedProduct?.value}`;
+  let url = `/formulation-report?page=${page}&page_size=${pageSize}`;
 
   if (
     querySearch.formulation_status !== null &&
@@ -212,7 +222,7 @@ export async function getReportFormulationTableSelectWorkOrder(
 export async function getReportFormulationById(id: string) {
   try {
     const response = await API.protectedProcedure({
-      url: `/formulation-reports/${id}`,
+      url: `/formulation-report/${id}`,
     });
 
     if (response.status == 200) {
@@ -229,7 +239,7 @@ export async function downloadReportFormulation(
   try {
     const fractionalDigit = useFormulationReport.getState().appFractionalDigit; // prettier-ignore
     const response = await API.protectedProcedure({
-      url: `/formulation-reports/${url}`,
+      url: `/formulation-report/${url}`,
     });
     const templateFile = await fetch(
       '/template-report.xlsx',
