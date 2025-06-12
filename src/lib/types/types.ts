@@ -253,7 +253,6 @@ export type ScaleDevice = {
   ZeroCommand: string;
 };
 
-
 export type WeighingLoggerRequest = {
   formulationReportLinesId: string | null;
   mass: number | null;
@@ -263,4 +262,6 @@ export type WeighingLoggerRequest = {
   appId: string | null;
   supplier: string | null;
   manufacturer: string | null;
+  remark: string | null;
+  containerName: string | null;
 };

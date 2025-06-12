@@ -73,7 +73,7 @@ type Field = {
   label: string;
   id: string;
   value?: string;
-  render?: (item: any) => string;
+  render?: (item: any) => any;
 };
 
 const fields: Field[] = [
@@ -86,7 +86,7 @@ const fields: Field[] = [
     label: 'Total Ingredients',
     id: 'totalIngredients1',
     render: (data: FormulationReportHeader) => {
-      return data.totalIngredient;
+      return data?.totalIngredient;
     },
   },
   {
@@ -103,14 +103,14 @@ const fields: Field[] = [
     label: 'Total Weight Formula',
     id: 'totalWeightFormula',
     render: (data: FormulationReportHeader) => {
-      return (data.totalWeightFormula ?? 0).toFixed(4);
+      return (data?.totalWeightFormula ?? 0).toFixed(4);
     },
   },
   {
     label: 'Actual/Target',
     id: 'actualTarget',
     render: (data: FormulationReportHeader) => {
-      return `${(data.actualMass ?? 0).toFixed(4)}/${(data.requestedMass ?? 0).toFixed(4)}`;
+      return `${(data?.actualMass ?? 0).toFixed(4)}/${(data?.requestedMass ?? 0).toFixed(4)}`;
     },
   },
 ] as const;
@@ -444,7 +444,7 @@ export function DialogDetailReport({
               Close
             </AlertDialogCancel>
           </div>
-          <Button
+          {/* <Button
             className={cn(
               'flex w-[200px] items-center gap-4 bg-blue-500 hover:bg-blue-400',
               {
@@ -461,7 +461,7 @@ export function DialogDetailReport({
             {data?.status === 0 || data?.status === 1
               ? 'Timbang'
               : 'Sudah Selesai'}
-          </Button>
+          </Button> */}
         </div>
       </AlertDialogContent>
     </AlertDialog>

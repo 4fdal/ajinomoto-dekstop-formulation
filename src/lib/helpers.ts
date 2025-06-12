@@ -21,6 +21,9 @@ const getErrorMessage = (error: unknown): string => {
 
   if (error instanceof Error) {
     message = error.message;
+    if (error?.response?.data?.error) {
+      message = error?.response?.data?.error;
+    }
   } else if (
     error &&
     typeof error === 'object' &&
@@ -176,32 +179,30 @@ const generateDefaultStoreValues = async () => {
       },
       tauri_formulation_service_url: {
         value:
-          env.TAURI_FORMULATION_SERVICE_URL ??
+          env.VITE_FORMULATION_SERVICE_URL ??
           'http://localhost:3003',
       },
       tauri_printer_url: {
         value:
-          env.TAURI_FORMULATION_PRINTER_URL ??
+          env.VITE_FORMULATION_PRINTER_URL ??
           'http://localhost:3012',
       },
       tauri_formulation_websocket_url: {
         value:
-          env.TAURI_FORMULATION_WEBSOCKET ??
+          env.VITE_FORMULATION_WEBSOCKET ??
           'http://localhost:3007',
-        // value: 'http://localhost:3007/wss',
       },
       tauri_formulation_store_url: {
         value:
-          env.TAURI_FORMULATION_STORE_URL ??
+          env.VITE_FORMULATION_STORE_URL ??
           'http://localhost:3003',
-        // value: 'http://localhost:3007/wss',
       },
       tauri_application_id: {
-        value: '02',
+        value: env.VITE_APPLICATION_ID ?? '02',
       },
       tauri_formulation_scale_url: {
         value:
-          env.TAURI_FORMULATION_SCALE_URL ??
+          env.VITE_FORMULATION_SCALE_URL ??
           'http://localhost:3011',
       },
       tauri_formulation_type_printer: {
@@ -245,11 +246,11 @@ const generateDefaultStoreValues = async () => {
     for (const [key, value] of Object.entries(
       defaultStoreValues,
     )) {
-      // const existingValue = await store.get(key);
-      // if (existingValue === null) {
-      // If the key doesn't exist in the store
-      await store.set(key, value);
-      // }
+      const existingValue = await store.get(key);
+      if (existingValue === null) {
+        // If the key doesn't exist in the store
+        await store.set(key, value);
+      }
     }
     await store.save();
   } catch (error) {

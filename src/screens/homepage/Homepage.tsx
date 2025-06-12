@@ -36,6 +36,7 @@ import {
   updateReportFormulationLines,
 } from '~/actions/reports.action';
 import {
+  Container,
   FormulationReportLine,
   RawMaterialStock,
   ScaleDevice,
@@ -49,6 +50,10 @@ import onScan from 'onscan.js';
 import { getRawMaterialStockWithQRCode } from '~/actions/raw-material-stock.action';
 import { cn } from '~/lib/utils';
 import { toast } from 'sonner';
+import { Textarea } from '~/components/ui/textarea';
+import { number } from 'zod';
+import { getContainerWithName } from '~/actions/container.action';
+import moment from 'moment';
 
 export default function Homepage() {
   const store = new Store('.settings.dat');
@@ -68,6 +73,9 @@ export default function Homepage() {
     useState<boolean>(false);
   const [rawMaterialStock, setRawMaterialStock] =
     useState<RawMaterialStock>();
+  const [container, setContainer] = useState<Container>();
+  const [remark, setRemark] = useState<string>('');
+  const [scanState, setScanState] = useState<number>(0);
 
   const { user } = useUserAuthStore((state) => state);
   const { isExpandedSidebar, setGuardedMaterial, guardedMaterial, setIsScaleConnected, setScaleFractionalDigit } = useUserDisplayStore((state) => state); // prettier-ignore
@@ -98,6 +106,8 @@ export default function Homepage() {
       appId: null,
       supplier: null,
       manufacturer: null,
+      remark: null,
+      containerName: null,
     };
     let error: {
       scale: string | null;
@@ -125,15 +135,22 @@ export default function Homepage() {
         'The scale value is less than the minimum value specified';
     }
 
+    if (container?.name != frLine?.container?.name) {
+      disabledSubmit = true;
+      error.scale =
+        'Please scan the container formulation QR code';
+    }
+
     if (!rawMaterialStock) {
       disabledSubmit = true;
       error.scale =
         'Please scan the stock material QR code';
-    } else if (rawMaterialStock.stock < scaleValue) {
-      disabledSubmit = true;
-      error.scale =
-        'Unable to weigh because the stock material value is insufficient';
     }
+    // else if (rawMaterialStock.stock < scaleValue) {
+    //   disabledSubmit = true;
+    //   error.scale =
+    //     'Unable to weigh because the stock material value is insufficient';
+    // }
 
     if (rawMaterialStock && frLine) {
       valueSubmit = {
@@ -143,8 +160,10 @@ export default function Homepage() {
         supplier: rawMaterialStock.supplier,
         operator: user.username as string,
         mass: scaleValue,
-        notes: `Weight date ${new Date().toString()}`,
+        notes: remark,
         productBatchNumber: `${frLine.FormulationReportHeader.batchProductionId}`,
+        remark: remark,
+        containerName: container?.name ?? null,
       };
     }
 
@@ -160,7 +179,13 @@ export default function Homepage() {
       minFlag,
       maxFlag,
     };
-  }, [scaleValue, frLine, isWaitWeight, rawMaterialStock]);
+  }, [
+    scaleValue,
+    frLine,
+    isWaitWeight,
+    rawMaterialStock,
+    container,
+  ]);
 
   const handleDetectDevice = async () => {
     const device = (await store.get(
@@ -221,11 +246,31 @@ export default function Homepage() {
     );
   };
 
-  const handleListenToScanner = (barcode: string) => {
-    setRawMaterialStock(undefined);
-    getRawMaterialStockWithQRCode(barcode).then((data) => {
-      setRawMaterialStock(data);
-    });
+  const handleListenToScanner = async (barcode: string) => {
+    try {
+      if (scanState == 0) {
+        setRawMaterialStock(undefined);
+        const data =
+          await getRawMaterialStockWithQRCode(barcode);
+        setRawMaterialStock(data);
+        setScanState(scanState + 1);
+      } else {
+        setContainer(undefined);
+        const data = await getContainerWithName(barcode);
+
+        if (data?.name != frLine?.container?.name)
+          throw new Error(
+            'The container being scanned is not in the formula, please repeat the scan.',
+          );
+
+        setContainer(data);
+        setScanState(0);
+      }
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.message ?? error?.message,
+      );
+    }
   };
 
   const handleGetFormulationReportLine = () => {
@@ -247,11 +292,19 @@ export default function Homepage() {
         scaleIndicator.valueSubmit,
       )
         .then(() => {
+          setContainer(undefined);
+          setRemark('');
           setScaleValue(0);
           setRawMaterialStock(undefined);
           setFrLine(undefined);
           setIsWeitingWeight(true);
           toast.success(`Weighing was successful`);
+          sendCommand('Z@', () => {
+            toast.success('Zero terkirim');
+          });
+          sendCommand('C@', () => {
+            toast.success('Clear terkirim');
+          });
           // handleGetFormulationReportLine();
         })
         .catch((err) => {
@@ -287,7 +340,7 @@ export default function Homepage() {
     return () => {
       onScan.detachFrom(document); // pastikan detach saat unmount
     };
-  }, []);
+  }, [scanState]);
 
   useEffect(() => {
     if (guardedMaterial?.server) {
@@ -328,10 +381,10 @@ export default function Homepage() {
 
   return (
     <>
-      <ContainerLayout className="flex h-full w-full flex-col justify-start overflow-y-auto pr-4">
+      <ContainerLayout className="mb-20 flex h-full w-full flex-col justify-start overflow-y-auto pr-4">
         <div className="flex flex-row items-start justify-between">
-          <div className="flex flex-row justify-start gap-2">
-            <div className="flex rounded-xl border p-5 font-bold shadow-sm">
+          <div className="flex flex-row justify-start gap-1">
+            <div className="flex rounded-xl border px-5 py-2 font-bold shadow-sm">
               {!isWaitWeight ? (
                 frLine?.FormulationReportHeader
                   .formulationName
@@ -342,7 +395,7 @@ export default function Homepage() {
                 </div>
               )}
             </div>
-            <div className="flex rounded-xl border p-5 font-bold shadow-sm">
+            <div className="flex rounded-xl border px-5 py-2 font-bold shadow-sm">
               {!isWaitWeight ? (
                 frLine?.FormulationReportHeader
                   .BatchProduction.code
@@ -363,7 +416,7 @@ export default function Homepage() {
             <RefreshCw size={15} />
           </Button>
         </div>
-        <div className="mt-5 flex flex-col gap-2">
+        <div className="flex flex-col gap-2">
           <div className="flex flex-row items-end justify-end gap-1">
             <span className="font-mono text-4xl italic text-gray-500">
               {scaleValue?.toFixed(4)}
@@ -372,7 +425,6 @@ export default function Homepage() {
               gr
             </span>
           </div>
-
           <div className="flex flex-row justify-between">
             <div className="flex flex-row items-center gap-2">
               <span className="rounded-lg bg-gray-100 p-2">
@@ -406,7 +458,6 @@ export default function Homepage() {
               </p>
             </div>
           </div>
-
           <div className="flex-1 gap-2">
             <div className="relative h-3 overflow-hidden rounded-full bg-gray-200">
               <div
@@ -426,7 +477,15 @@ export default function Homepage() {
                   width:
                     scaleIndicator.currentProgress + '%',
                 }}
-                className={`h-full bg-green-600`}
+                className={cn(`h-full`, {
+                  'bg-green-600':
+                    scaleValue >= scaleIndicator.min &&
+                    scaleValue <= scaleIndicator.max,
+                  'bg-yellow-400':
+                    scaleValue < scaleIndicator.min,
+                  'bg-red-500':
+                    scaleValue > scaleIndicator.max,
+                })}
               ></div>
             </div>
             <div className="relative mt-1 flex justify-between text-[10px] text-gray-400">
@@ -448,9 +507,8 @@ export default function Homepage() {
               </span>
             </div>
           </div>
-
           <p
-            className={cn({
+            className={cn('text-xs', {
               'text-red-500': scaleIndicator.error.scale,
             })}
           >
@@ -458,7 +516,7 @@ export default function Homepage() {
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-2 items-center gap-5">
+        <div className="grid grid-cols-2 items-center gap-5">
           <div className="grid grid-cols-2 gap-2">
             {rawMaterialStock?.raw_material
               .photo_material_package &&
@@ -498,7 +556,7 @@ export default function Homepage() {
             )}
           </div>
           <div className="flex w-full flex-col gap-2">
-            <div className="flex flex-col rounded-lg border p-1">
+            <div className="flex flex-row items-center gap-2 rounded-lg border p-1">
               <span className="text-xs text-gray-500">
                 Jenis
               </span>
@@ -506,7 +564,7 @@ export default function Homepage() {
                 {rawMaterialStock?.rm_name}
               </p>
             </div>
-            <div className="flex flex-col rounded-lg border p-1">
+            <div className="flex flex-row items-center gap-2 rounded-lg border p-1">
               <span className="text-xs text-gray-500">
                 Material Name
               </span>
@@ -517,7 +575,7 @@ export default function Homepage() {
                 }
               </p>
             </div>
-            <div className="flex flex-col rounded-lg border p-1">
+            <div className="flex flex-row items-center gap-2 rounded-lg border p-1">
               <span className="text-xs text-gray-500">
                 Lot Number
               </span>
@@ -525,7 +583,7 @@ export default function Homepage() {
                 {rawMaterialStock?.lot_number}
               </p>
             </div>
-            <div className="flex flex-col rounded-lg border p-1">
+            <div className="flex flex-row items-center gap-2 rounded-lg border p-1">
               <span className="text-xs text-gray-500">
                 Supplier
               </span>
@@ -533,7 +591,7 @@ export default function Homepage() {
                 {rawMaterialStock?.supplier}
               </p>
             </div>
-            <div className="flex flex-col rounded-lg border p-1">
+            <div className="flex flex-row items-center gap-2 rounded-lg border p-1">
               <span className="text-xs text-gray-500">
                 Manufacturer
               </span>
@@ -541,39 +599,76 @@ export default function Homepage() {
                 {rawMaterialStock?.manufacturer}
               </p>
             </div>
+            <div className="flex flex-row items-center gap-2 rounded-lg border p-1">
+              <span className="text-xs text-gray-500">
+                Expired Date
+              </span>
+              <p className="font-bold">
+                {rawMaterialStock?.expired_date &&
+                  moment(
+                    rawMaterialStock?.expired_date,
+                  ).format('YYYY-MM-DD')}
+              </p>
+            </div>
+            <div className="flex flex-row items-center gap-2 rounded-lg border p-1">
+              <span className="text-xs text-gray-500">
+                Container
+              </span>
+              <p className="font-bold">{container?.name}</p>
+            </div>
+            <div className="flex flex-row items-center gap-2 rounded-lg border p-1">
+              <span className="text-xs text-gray-500">
+                Remark
+              </span>
+              <Textarea
+                className="w-full"
+                placeholder="Notes..."
+                value={remark}
+                onChange={(e) => setRemark(e.target.value)}
+              />
+            </div>
           </div>
         </div>
-        <div className="mt-10 flex flex-row items-center justify-between gap-5">
-          <div className="grid grid-cols-3 gap-1">
+        <div className="mt-2 flex flex-row items-center justify-between gap-5">
+          <div className="flex flex-row gap-2">
+            <div className="grid grid-cols-3 gap-1">
+              <Button
+                onClick={() => {
+                  sendCommand('Z@', () => {
+                    toast.success('Zero terkirim');
+                  });
+                }}
+                className="rounded-full bg-green-400 hover:bg-green-300"
+              >
+                Z
+              </Button>
+              <Button
+                onClick={() => {
+                  sendCommand('T@', () => {
+                    toast.success('Tare terkirim');
+                  });
+                }}
+                className="rounded-full bg-yellow-400 hover:bg-yellow-300"
+              >
+                T
+              </Button>
+              <Button
+                onClick={() => {
+                  sendCommand('C@', () => {
+                    toast.success('Clear terkirim');
+                  });
+                }}
+                className="rounded-full bg-red-400 hover:bg-red-300"
+              >
+                C
+              </Button>
+            </div>
             <Button
-              onClick={() => {
-                sendCommand('Z@', () => {
-                  toast.success('Zero terkirim');
-                });
-              }}
+              onClick={() => setScanState(0)}
               className="rounded-full bg-green-400 hover:bg-green-300"
             >
-              Z
-            </Button>
-            <Button
-              onClick={() => {
-                sendCommand('T@', () => {
-                  toast.success('Tare terkirim');
-                });
-              }}
-              className="rounded-full bg-yellow-400 hover:bg-yellow-300"
-            >
-              T
-            </Button>
-            <Button
-              onClick={() => {
-                sendCommand('C@', () => {
-                  toast.success('Clear terkirim');
-                });
-              }}
-              className="rounded-full bg-red-400 hover:bg-red-300"
-            >
-              C
+              SCAN STATE
+              {scanState == 0 ? ' MATERIAL' : ' CONTAINER'}
             </Button>
           </div>
           <div className="grid grid-cols-2 gap-4">

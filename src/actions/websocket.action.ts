@@ -317,12 +317,12 @@ export const connectToGuardWebSocket = async (
       );
       return;
     }
-    const [, , url] = BASE_URL.value.split('/');
-    const [host, port] = url.split(':');
 
-    const wsURL = `ws://localhost:${port}/forwarder?url=ws://${host}:${port}/ws`;
+    const [protocol, url] = BASE_URL.value.split('//');
+    const wsProtocol = protocol == 'http:' ? 'ws:' : 'wss:';
+    let wsURL = `${BASE_URL.value}/forwarder?url=${wsProtocol}//${url}/ws`;
+
     // const wsURL = `${BASE_URL.value}/forwarder?url=${BASE_URL.value}/ws`;
-
     const wsGuard = new WebSocket(wsURL);
 
     wsGuard.onopen = (event) => {
