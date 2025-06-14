@@ -1,5 +1,9 @@
 import { Button } from '~/components/ui/button';
-import { TriangleAlert, ScanBarcode, X } from 'lucide-react';
+import {
+  TriangleAlert,
+  ScanBarcode,
+  X,
+} from 'lucide-react';
 import { useState } from 'react';
 
 import {

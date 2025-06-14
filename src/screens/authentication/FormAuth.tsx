@@ -89,9 +89,8 @@ export default function FormAuth() {
       return loginAction(data);
     },
     onSuccess: (response) => {
-
       const user: UserLoggin = parseJwt(response?.token!);
-      
+
       setUser({
         access_token: response?.token,
         role: user.role,

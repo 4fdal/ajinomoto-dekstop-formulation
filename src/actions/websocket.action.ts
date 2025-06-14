@@ -309,14 +309,14 @@ export const connectToGuardWebSocket = async (
   )) as TauriStore;
 
   try {
-    if (
-      useUserDisplayStore.getState().isGuardSocketConnected
-    ) {
-      console.log(
-        'Only one websocket connection is allowed',
-      );
-      return;
-    }
+    // if (
+    //   useUserDisplayStore.getState().isGuardSocketConnected
+    // ) {
+    //   console.log(
+    //     'Only one websocket connection is allowed',
+    //   );
+    //   return;
+    // }
 
     const [protocol, url] = BASE_URL.value.split('//');
     const wsProtocol = protocol == 'http:' ? 'ws:' : 'wss:';

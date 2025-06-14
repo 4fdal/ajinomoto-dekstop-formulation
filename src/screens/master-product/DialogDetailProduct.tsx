@@ -39,7 +39,7 @@ export function DialogDetailProduct({
           </DialogDescription>
         </DialogHeader>
         <section className="flex flex-col space-y-2">
-        <div>
+          <div>
             <Label htmlFor="product_code">
               Material Code
             </Label>
@@ -51,7 +51,7 @@ export function DialogDetailProduct({
               placeholder="Material Code"
             />
           </div>
-          
+
           <div>
             <Label htmlFor="product_name">
               Material Name

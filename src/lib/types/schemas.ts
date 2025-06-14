@@ -18,7 +18,7 @@ export const WorkOrderSchema = z.object({
   order_qty: z.string().min(1, {
     message: 'order quantity must be must be filled.',
   }),
-  multiplier: z.string()
+  multiplier: z.string(),
 });
 
 export const FormulationSchema = z.object({

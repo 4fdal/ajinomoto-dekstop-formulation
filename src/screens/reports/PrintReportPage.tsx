@@ -11,7 +11,6 @@ const PrintReportPage = forwardRef(
     },
     ref,
   ) => {
-
     let newestCreatedAt = moment(props.itemContents?.FormulationReportLines[0]?.FormulationReportWeighingLoggers[0]?.createdAt) // prettier-ignore
     let oldestCreatedAt = moment(props.itemContents?.FormulationReportLines[0]?.FormulationReportWeighingLoggers[0]?.createdAt) // prettier-ignore
 

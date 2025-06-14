@@ -38,14 +38,13 @@ const ProgressScaleV3 = React.forwardRef<
     const [val, setVal] = React.useState(0);
     const isEqualMinMaxAndCurrentVal = value == minValue && minValue == maxValue // prettier-ignore
 
-    const {
-      isExpandedSidebar,
-    } = useUserDisplayStore((state) => state);
+    const { isExpandedSidebar } = useUserDisplayStore(
+      (state) => state,
+    );
 
     // RECHECK
-    const {
-      isUserScannedMaterialReports,
-    } = useUserAuthStore((state) => state);
+    const { isUserScannedMaterialReports } =
+      useUserAuthStore((state) => state);
 
     const { isReadyToStartWeighing } = useFormulationReport(); // prettier-ignore
 

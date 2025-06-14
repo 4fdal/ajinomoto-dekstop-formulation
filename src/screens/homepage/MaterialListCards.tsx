@@ -110,13 +110,18 @@ export const MaterialListCards = () => {
               {
                 'bg-[#eff0fa]': item.actualMass == 0,
                 'bg-yellow-500':
-                  item.actualMass < item.min?.toFixed(appFractionalDigit) &&
+                  item.actualMass <
+                    item.min?.toFixed(appFractionalDigit) &&
                   item.actualMass !== 0,
                 'bg-green-500':
-                  item.actualMass >= item.min?.toFixed(appFractionalDigit) &&
-                  item.actualMass <= item.max?.toFixed(appFractionalDigit) &&
+                  item.actualMass >=
+                    item.min?.toFixed(appFractionalDigit) &&
+                  item.actualMass <=
+                    item.max?.toFixed(appFractionalDigit) &&
                   item.actualMass !== 0,
-                'bg-red-500': item.actualMass > item.max?.toFixed(appFractionalDigit),
+                'bg-red-500':
+                  item.actualMass >
+                  item.max?.toFixed(appFractionalDigit),
               },
             )}
           >

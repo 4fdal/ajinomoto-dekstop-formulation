@@ -100,7 +100,6 @@ export default function Sidebar() {
             <></>
           )}
 
-
           {!isUserScannedMaterialReports && (
             <NavLink
               to="/select-workorder"
@@ -109,8 +108,8 @@ export default function Sidebar() {
                 isPending
                   ? 'pending'
                   : isActive
-                  ? 'rounded-md bg-yellow-200 p-3'
-                  : 'p-3 transition-all'
+                    ? 'rounded-md bg-yellow-200 p-3'
+                    : 'p-3 transition-all'
               }
             >
               <ClipboardList />

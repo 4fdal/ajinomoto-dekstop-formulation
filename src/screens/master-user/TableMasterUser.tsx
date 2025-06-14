@@ -1,7 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { UserPlus } from 'lucide-react';
 import { getMasterUsers } from '~/actions/masters.action';
-import { encodeObjectToBase64, getDefaultTauriStore } from '~/lib/helpers';
+import {
+  encodeObjectToBase64,
+  getDefaultTauriStore,
+} from '~/lib/helpers';
 import { FormCreateUser } from './FormCreateUser';
 import { Button } from '~/components/ui/button';
 import { DialogConfirmDelete } from './DialogConfirmDelete';
@@ -82,28 +85,36 @@ export default function TableMasterUser() {
   useEffect(() => {
     const fetchClientCreationStatus = async () => {
       try {
-        const result = await getDefaultTauriStore<{ value: boolean }>('tauri_enable_client_creation');
+        const result = await getDefaultTauriStore<{
+          value: boolean;
+        }>('tauri_enable_client_creation');
         setIsEnableClientCreation(result?.value ?? false); // Default to false if no value found
       } catch (error) {
-        console.error('Error fetching client creation status:', error);
+        console.error(
+          'Error fetching client creation status:',
+          error,
+        );
       }
     };
 
     fetchClientCreationStatus();
   }, []);
 
-
   return (
     <main className="flex h-full flex-col">
       <section className="flex h-full flex-1 flex-col pr-2 pt-3">
         <section className="flex w-full justify-end">
-          {isEnableClientCreation && <Button
-            onClick={() => navigate('?is_create_user=true')}
-            className="flex w-[130px] items-center gap-2 bg-blue-500 hover:bg-blue-400"
-          >
-            <UserPlus size={20} />
-            Add New
-          </Button>}
+          {isEnableClientCreation && (
+            <Button
+              onClick={() =>
+                navigate('?is_create_user=true')
+              }
+              className="flex w-[130px] items-center gap-2 bg-blue-500 hover:bg-blue-400"
+            >
+              <UserPlus size={20} />
+              Add New
+            </Button>
+          )}
         </section>
 
         <section className="mb-12 mt-3 flex-1 overflow-auto rounded-sm border">

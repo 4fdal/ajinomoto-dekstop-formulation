@@ -6,7 +6,10 @@ import { DialogConfirmDelete } from './DialogConfirmDelete';
 import { DialogDetailProduct } from './DialogDetailProduct';
 import { deleteProductWeightBridge } from '~/actions/product.action';
 import { toast } from 'sonner';
-import { encodeObjectToBase64, getDefaultTauriStore } from '~/lib/helpers';
+import {
+  encodeObjectToBase64,
+  getDefaultTauriStore,
+} from '~/lib/helpers';
 import { Input } from '~/components/ui/input';
 import { IProductWeightBridge } from '~/lib/types/types';
 import { DialogDeleteProduct } from './DialogDeleteProduct';
@@ -79,8 +82,13 @@ export function TableMasterProduct() {
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
-  const [isEnableClientCreation, setIsEnableClientCreation] = useState<boolean>(false);
-  const [whitelistedList, setWhitelistedList] = useState<string[]>([]);
+  const [
+    isEnableClientCreation,
+    setIsEnableClientCreation,
+  ] = useState<boolean>(false);
+  const [whitelistedList, setWhitelistedList] = useState<
+    string[]
+  >([]);
 
   const keyboard = useRef();
   const caretPositionRef = useRef(0);
@@ -224,24 +232,28 @@ export function TableMasterProduct() {
   };
 
   const isWhitelisted = (productName: string) => {
-    return whitelistedList.includes(productName)
-  }
+    return whitelistedList.includes(productName);
+  };
 
   const modifyWhitelisted = async (productName: string) => {
     setWhitelistedList((prevList) => {
       const updatedList = prevList.includes(productName)
         ? prevList.filter((item) => item !== productName)
-        : [...prevList, productName]; 
-  
+        : [...prevList, productName];
+
       store
-        .set('tauri_whitelisted_product', { value: updatedList.join(',') })
-        .catch((error) => console.error('Error saving whitelist:', error));
-  
+        .set('tauri_whitelisted_product', {
+          value: updatedList.join(','),
+        })
+        .catch((error) =>
+          console.error('Error saving whitelist:', error),
+        );
+
       return updatedList;
     });
     const whitelistedProduct = await getDefaultTauriStore<{ value: string }>('tauri_whitelisted_product') // prettier-ignore
 
-    console.log(whitelistedProduct, whitelistedList)
+    console.log(whitelistedProduct, whitelistedList);
   };
 
   useEffect(() => {
@@ -255,16 +267,21 @@ export function TableMasterProduct() {
   }, [searchTerm]);
 
   useEffect(() => {
-
     const fetchClientCreationStatus = async () => {
       try {
         const whitelistedProduct = await getDefaultTauriStore<{ value: string }>('tauri_whitelisted_product') // prettier-ignore
-        const splittedProducts = whitelistedProduct?.value?.split(',') || [];
-        const result = await getDefaultTauriStore<{ value: boolean }>('tauri_enable_client_creation');
+        const splittedProducts =
+          whitelistedProduct?.value?.split(',') || [];
+        const result = await getDefaultTauriStore<{
+          value: boolean;
+        }>('tauri_enable_client_creation');
         setIsEnableClientCreation(result?.value ?? false); // Default to false if no value found
-        setWhitelistedList(splittedProducts)
+        setWhitelistedList(splittedProducts);
       } catch (error) {
-        console.error('Error fetching client creation status:', error);
+        console.error(
+          'Error fetching client creation status:',
+          error,
+        );
       }
     };
 
@@ -295,45 +312,47 @@ export function TableMasterProduct() {
           />
         </div>
 
-       { isEnableClientCreation &&  <div className="flex items-center gap-3 pr-2">
-          <Button
-            onClick={handleButtonClick}
-            className={cn(
-              'flex w-[130px] items-center gap-2 bg-blue-500 hover:bg-blue-400',
-              {
-                'border border-blue-500 bg-white':
-                  isPending,
-              },
-            )}
-          >
-            <FileUp
-              size={20}
-              className={cn('', {
-                hidden: isPending,
-              })}
-            />
-            <input
-              type="file"
-              id="file"
-              name="file"
-              accept=".xlsx" // Specify allowed file type
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              style={{ display: 'none' }}
-            />
-            {isPending ? <SmallSpinner /> : 'Import'}
-          </Button>
+        {isEnableClientCreation && (
+          <div className="flex items-center gap-3 pr-2">
+            <Button
+              onClick={handleButtonClick}
+              className={cn(
+                'flex w-[130px] items-center gap-2 bg-blue-500 hover:bg-blue-400',
+                {
+                  'border border-blue-500 bg-white':
+                    isPending,
+                },
+              )}
+            >
+              <FileUp
+                size={20}
+                className={cn('', {
+                  hidden: isPending,
+                })}
+              />
+              <input
+                type="file"
+                id="file"
+                name="file"
+                accept=".xlsx" // Specify allowed file type
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+              />
+              {isPending ? <SmallSpinner /> : 'Import'}
+            </Button>
 
-          <Button
-            onClick={() =>
-              navigate('?is_create_products=true')
-            }
-            className="flex w-[130px] items-center gap-2 bg-blue-500 hover:bg-blue-400"
-          >
-            <FilePlus2 size={20} />
-            Add New
-          </Button>
-        </div>}
+            <Button
+              onClick={() =>
+                navigate('?is_create_products=true')
+              }
+              className="flex w-[130px] items-center gap-2 bg-blue-500 hover:bg-blue-400"
+            >
+              <FilePlus2 size={20} />
+              Add New
+            </Button>
+          </div>
+        )}
       </div>
 
       <div className="mb-8 mr-2 flex flex-1 flex-col justify-between overflow-x-auto rounded-md border">
@@ -372,12 +391,14 @@ export function TableMasterProduct() {
                       {(page - 1) * 7 + idx + 1}{' '}
                     </TableCell>
                     <TableCell>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        checked={isWhitelisted(data.name)}
-                        onCheckedChange={() => modifyWhitelisted(data.name)}
-                      />
-                    </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          checked={isWhitelisted(data.name)}
+                          onCheckedChange={() =>
+                            modifyWhitelisted(data.name)
+                          }
+                        />
+                      </div>
                     </TableCell>
                     <TableCell>{data.code}</TableCell>
                     <TableCell>{data.name}</TableCell>

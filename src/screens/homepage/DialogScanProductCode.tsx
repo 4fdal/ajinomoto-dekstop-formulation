@@ -168,8 +168,8 @@ export function DialogScanProductCode() {
             Verify Material
           </DialogTitle>
           <DialogDescription>
-            Verify your material code with material list card
-            code.
+            Verify your material code with material list
+            card code.
           </DialogDescription>
         </DialogHeader>
         <div className="full">

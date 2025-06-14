@@ -102,8 +102,9 @@ export function FilterReportFormulation({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          className={cn('rounded-sm p-2 gap-2', {
-            'bg-red-100 text-red-600 hover:bg-red-50': shouldDirty,
+          className={cn('gap-2 rounded-sm p-2', {
+            'bg-red-100 text-red-600 hover:bg-red-50':
+              shouldDirty,
           })}
           variant="outline"
         >

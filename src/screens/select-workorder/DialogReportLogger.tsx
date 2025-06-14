@@ -63,15 +63,9 @@ export function DialogReportLogger({
                   Mass
                 </TableHead>
                 <TableHead>Material Batch Number</TableHead>
-                <TableHead>
-                  User
-                </TableHead>
-                <TableHead>
-                  AppId
-                </TableHead>
-                <TableHead>
-                  Tanggal
-                </TableHead>
+                <TableHead>User</TableHead>
+                <TableHead>AppId</TableHead>
+                <TableHead>Tanggal</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -83,12 +77,8 @@ export function DialogReportLogger({
                   <TableCell>
                     {item.productBatchNumber}
                   </TableCell>
-                  <TableCell>
-                    {item.operator}
-                  </TableCell>
-                  <TableCell>
-                    {item.appId}
-                  </TableCell>
+                  <TableCell>{item.operator}</TableCell>
+                  <TableCell>{item.appId}</TableCell>
                   <TableCell>
                     {convertToDate(`${item.createdAt}`)}
                   </TableCell>

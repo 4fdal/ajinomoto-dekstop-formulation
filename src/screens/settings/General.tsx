@@ -52,7 +52,7 @@ type FocusedFieldType =
   | 'websocket_url'
   | 'enable_overweight_protection'
   | 'auto_save_time_weight_out_of_tolerance'
-  | 'enable_scan_product_code'
+  | 'enable_scan_product_code';
 
 export function General() {
   const store = new Store('.settings.dat');
@@ -520,7 +520,9 @@ export function General() {
                       Enable Client Creation
                     </FormLabel>
                     <FormDescription>
-                      Feature to enable modifying server data from client. Should be turned off when using syncronizer.
+                      Feature to enable modifying server
+                      data from client. Should be turned off
+                      when using syncronizer.
                     </FormDescription>
                   </div>
                   <FormControl>
@@ -544,7 +546,8 @@ export function General() {
                       Enable Outweight Rejection
                     </FormLabel>
                     <FormDescription>
-                      Feature to enable rejection when saved weight is over tolerable value.
+                      Feature to enable rejection when saved
+                      weight is over tolerable value.
                     </FormDescription>
                   </div>
                   <FormControl>
@@ -592,7 +595,8 @@ export function General() {
                       Enable Scan Product Code
                     </FormLabel>
                     <FormDescription>
-                      Feature to give validation of product code before start weighing
+                      Feature to give validation of product
+                      code before start weighing
                     </FormDescription>
                   </div>
                   <FormControl>

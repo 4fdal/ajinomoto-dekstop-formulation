@@ -36,8 +36,8 @@ export function DialogApprovalProblem() {
             className="w-[200px]"
           />
           <h1 className="text-center">
-            Order tidak dapat dilanjutkan karena ada material
-            yang melebihi batas toleransi. Hubungi
+            Order tidak dapat dilanjutkan karena ada
+            material yang melebihi batas toleransi. Hubungi
             supervisor untuk dapat melanjutkan order
           </h1>
         </section>

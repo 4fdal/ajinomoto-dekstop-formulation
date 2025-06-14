@@ -34,9 +34,12 @@ import {
 import { Input } from '~/components/ui/input';
 import { useUserDisplayStore } from '~/lib/store/store';
 import { VirtualKeyboard } from '~/components/VirtualKeyboard';
-import { connectToScaleWebSocket, connectWithIndex } from '~/actions/websocket.action';
+import {
+  connectToScaleWebSocket,
+  connectWithIndex,
+} from '~/actions/websocket.action';
 
-type FocusedFieldType = any
+type FocusedFieldType = any;
 
 const ScaleObjectSchema = z.object({
   ID: z.number(),
@@ -75,7 +78,8 @@ export function Scale() {
   const [tempField, setTempField] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [spanValue, setSpanValue] = useState('');
-  const [zeroScaleTarget, setZeroScaleTarget] = useState('');
+  const [zeroScaleTarget, setZeroScaleTarget] =
+    useState('');
 
   const keyboard = useRef();
   const caretPositionRef = useRef(0);
@@ -190,10 +194,10 @@ export function Scale() {
       form.setValue('scales', scaleDevices.value);
       form.setValue('number_of_scale', numberOfScale.value);
     };
-    
+
     getDefaultSettingValue().finally(() => {
       setIsLoading(false);
-    })
+    });
   }, []);
 
   const handleVirtualKeyboardChange = (txt: string) => {
@@ -204,40 +208,47 @@ export function Scale() {
   };
 
   const zeroCallib = async () => {
-    setIsPendingZero(true)
+    setIsPendingZero(true);
     try {
       const closeFunction = (error: boolean) => {
         try {
           if (error) {
-            toast.error("Gagal melakukan zero")
+            toast.error('Gagal melakukan zero');
           } else {
-            toast.success("Zero sukses, lanjut span")
+            toast.success('Zero sukses, lanjut span');
           }
         } finally {
-          setIsPendingZero(false)
+          setIsPendingZero(false);
         }
-      }
-      await connectWithIndex(Number(zeroScaleTarget) - 1, "ZCL@", closeFunction)
+      };
+      await connectWithIndex(
+        Number(zeroScaleTarget) - 1,
+        'ZCL@',
+        closeFunction,
+      );
     } finally {
     }
-  }
+  };
 
   const spanCallib = () => {
-    setIsPendingSpan(true)
+    setIsPendingSpan(true);
     const closeFunction = (error: boolean) => {
       try {
         if (error) {
-          toast.error("Gagal melakukan span")
+          toast.error('Gagal melakukan span');
         } else {
-          toast.success("span sukses, kalibrasi selesai")
+          toast.success('span sukses, kalibrasi selesai');
         }
       } finally {
-        setIsPendingSpan(false)
+        setIsPendingSpan(false);
       }
-    }
-    connectWithIndex(Number(zeroScaleTarget) - 1, `SCL@${spanValue}`, closeFunction)
-  }
-
+    };
+    connectWithIndex(
+      Number(zeroScaleTarget) - 1,
+      `SCL@${spanValue}`,
+      closeFunction,
+    );
+  };
 
   const onChange = (newInput: string) => {
     updateCaretPosition(newInput);
@@ -263,7 +274,7 @@ export function Scale() {
             caretPositionRef.current,
           );
         }
-        setZeroScaleTarget(newInput)
+        setZeroScaleTarget(newInput);
         break;
       case 'span_value':
         if (input3Ref.current) {
@@ -273,7 +284,7 @@ export function Scale() {
             caretPositionRef.current,
           );
         }
-        setSpanValue(newInput)
+        setSpanValue(newInput);
         break;
       default:
         break;
@@ -429,57 +440,55 @@ export function Scale() {
               </Button>
             </form>
           </Form>
-          <div className={cn(
-              'z-30 w-full flex flex-col gap-5 mt-5 justify-end items-end '
-            )}>
-          <Input
-            placeholder='Nomor urut timbangan'
-            value={zeroScaleTarget}
-            // ref={input2Ref}
-            onChange={onChangeInput}
-            onClick={onChangeInput}
-            onFocus={() =>
-              handleCurrentFocusField(
-                'zero_scale_target',
-              )
-            }
+          <div
             className={cn(
-              'w-1/4 mr-5 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 ',
+              'z-30 mt-5 flex w-full flex-col items-end justify-end gap-5',
             )}
-          />
-          <Button
-            onClick={zeroCallib}
-            className={cn(
-              'z-30 w-1/4 bg-blue-500 text-base text-white hover:bg-blue-400 mr-5 ml-5 active:bg-opacity-70',
-            )}
-            type="button"
           >
-            {isPendingZero ? <Spinner /> : 'Zero'}
-          </Button>
-          <Input
-            value={spanValue}
-            // ref={input3Ref}
-            onFocus={() =>
-              handleCurrentFocusField(
-                'span_value',
-              )
-            }
-            onChange={onChangeInput}
-            onClick={onChangeInput}
-            placeholder='Nilai berat span'
-            className={cn(
-              'w-1/4 mr-5 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 ',
-            )}
-          />
-          <Button
-            onClick={spanCallib}
-            className={cn(
-              'z-30 w-1/4 bg-blue-500 text-base text-white hover:bg-blue-400 mr-5 ml-5 active:bg-opacity-70'
-            )}
-            type="button"
-          >
-            {isPendingSpan ? <Spinner /> : 'Span'}
-          </Button>
+            <Input
+              placeholder="Nomor urut timbangan"
+              value={zeroScaleTarget}
+              // ref={input2Ref}
+              onChange={onChangeInput}
+              onClick={onChangeInput}
+              onFocus={() =>
+                handleCurrentFocusField('zero_scale_target')
+              }
+              className={cn(
+                'mr-5 w-1/4 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500',
+              )}
+            />
+            <Button
+              onClick={zeroCallib}
+              className={cn(
+                'z-30 ml-5 mr-5 w-1/4 bg-blue-500 text-base text-white hover:bg-blue-400 active:bg-opacity-70',
+              )}
+              type="button"
+            >
+              {isPendingZero ? <Spinner /> : 'Zero'}
+            </Button>
+            <Input
+              value={spanValue}
+              // ref={input3Ref}
+              onFocus={() =>
+                handleCurrentFocusField('span_value')
+              }
+              onChange={onChangeInput}
+              onClick={onChangeInput}
+              placeholder="Nilai berat span"
+              className={cn(
+                'mr-5 w-1/4 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500',
+              )}
+            />
+            <Button
+              onClick={spanCallib}
+              className={cn(
+                'z-30 ml-5 mr-5 w-1/4 bg-blue-500 text-base text-white hover:bg-blue-400 active:bg-opacity-70',
+              )}
+              type="button"
+            >
+              {isPendingSpan ? <Spinner /> : 'Span'}
+            </Button>
           </div>
         </div>
       </section>

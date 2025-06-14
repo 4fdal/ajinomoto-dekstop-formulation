@@ -6,7 +6,10 @@ import { DialogDetailFormulation } from '../master-formulation/DialogDetailFormu
 import { DialogConfirmDelete } from '../master-formulation/DialogConfirmDelete';
 import { RFormulationReports } from '~/lib/types/responses';
 import { Input } from '~/components/ui/input';
-import { encodeObjectToBase64, getDefaultTauriStore } from '~/lib/helpers';
+import {
+  encodeObjectToBase64,
+  getDefaultTauriStore,
+} from '~/lib/helpers';
 import { cn } from '~/lib/utils';
 import { toast } from 'sonner';
 import { Button } from '~/components/ui/button';
@@ -73,7 +76,10 @@ const Status = ({ no }: { no: number }) => {
 
 export function TableMasterFormulation() {
   const navigate = useNavigate();
-   const [isEnableClientCreation, setIsEnableClientCreation] = useState<boolean>(false);
+  const [
+    isEnableClientCreation,
+    setIsEnableClientCreation,
+  ] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(
     null,
@@ -217,10 +223,15 @@ export function TableMasterFormulation() {
   useEffect(() => {
     const fetchClientCreationStatus = async () => {
       try {
-        const result = await getDefaultTauriStore<{ value: boolean }>('tauri_enable_client_creation');
+        const result = await getDefaultTauriStore<{
+          value: boolean;
+        }>('tauri_enable_client_creation');
         setIsEnableClientCreation(result?.value ?? false); // Default to false if no value found
       } catch (error) {
-        console.error('Error fetching client creation status:', error);
+        console.error(
+          'Error fetching client creation status:',
+          error,
+        );
       }
     };
 
@@ -251,44 +262,44 @@ export function TableMasterFormulation() {
           />
         </div>
 
-       {
-        isEnableClientCreation &&  <div className="flex items-center gap-3">
-        <Button
-          onClick={handleButtonClick}
-          className={cn(
-            'flex w-[130px] items-center gap-2 bg-blue-500 hover:bg-blue-400',
-            {
-              'border border-blue-500 bg-white':
-                isPending,
-            },
-          )}
-        >
-          <FileUp
-            size={20}
-            className={cn('', {
-              hidden: isPending,
-            })}
-          />
-          <input
-            type="file"
-            id="file"
-            name="file"
-            accept=".xlsx" // Specify allowed file type
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-          />
-          {isPending ? <SmallSpinner /> : 'Import'}
-        </Button>
-        <Button
-          onClick={() => navigate('/formulations')}
-          className="flex w-[130px] items-center gap-2 bg-blue-500 hover:bg-blue-400"
-        >
-          <FilePlus2 size={20} />
-          Add New
-        </Button>
-      </div>
-       }
+        {isEnableClientCreation && (
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={handleButtonClick}
+              className={cn(
+                'flex w-[130px] items-center gap-2 bg-blue-500 hover:bg-blue-400',
+                {
+                  'border border-blue-500 bg-white':
+                    isPending,
+                },
+              )}
+            >
+              <FileUp
+                size={20}
+                className={cn('', {
+                  hidden: isPending,
+                })}
+              />
+              <input
+                type="file"
+                id="file"
+                name="file"
+                accept=".xlsx" // Specify allowed file type
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+              />
+              {isPending ? <SmallSpinner /> : 'Import'}
+            </Button>
+            <Button
+              onClick={() => navigate('/formulations')}
+              className="flex w-[130px] items-center gap-2 bg-blue-500 hover:bg-blue-400"
+            >
+              <FilePlus2 size={20} />
+              Add New
+            </Button>
+          </div>
+        )}
       </div>
 
       <div className="mb-12 mr-2 flex-1 overflow-x-auto rounded-sm border">

@@ -110,7 +110,10 @@ export default function FormDialogScanFormula() {
   const [focusedField, setFocusedField] = useState<FieldInputType>('work_order'); // prettier-ignore
   const [isEnableVirtual, setIsEnableVirtual] = useState(false); // prettier-ignore
   const [tempField, setTempField] = useState('');
-  const [isEnableOutweightRejection, setIsEnableOutweightRejection] = useState(false);
+  const [
+    isEnableOutweightRejection,
+    setIsEnableOutweightRejection,
+  ] = useState(false);
 
   const keyboard = useRef();
   const caretPositionRef = useRef(0);
@@ -203,10 +206,12 @@ export default function FormDialogScanFormula() {
       const statusOrder = checkStatusOrder(res.status);
 
       if (
-        ((isEnableOutweightRejection && isApprovalHasAProblem) &&
+        (isEnableOutweightRejection &&
+          isApprovalHasAProblem &&
           statusOrder == 'waiting_implementation' &&
           getUserRole() !== 'Admin') ||
-        ((isEnableOutweightRejection && isApprovalHasAProblem) &&
+        (isEnableOutweightRejection &&
+          isApprovalHasAProblem &&
           statusOrder == 'on_progress' &&
           getUserRole() !== 'Admin')
       ) {
@@ -395,10 +400,13 @@ export default function FormDialogScanFormula() {
       setIsEnableVirtual(isEnableVirtualKeyboard!.value);
     };
 
-    const handleGetIsEnableOutweightRejection = async () => {
-      const isEnableOutweightRejection = await store.get<{value: boolean}>('tauri_enable_outweight_rejection') // prettier-ignore
-      setIsEnableOutweightRejection(isEnableOutweightRejection!.value);
-    };
+    const handleGetIsEnableOutweightRejection =
+      async () => {
+        const isEnableOutweightRejection = await store.get<{value: boolean}>('tauri_enable_outweight_rejection') // prettier-ignore
+        setIsEnableOutweightRejection(
+          isEnableOutweightRejection!.value,
+        );
+      };
 
     handleGetIsEnableOutweightRejection();
 

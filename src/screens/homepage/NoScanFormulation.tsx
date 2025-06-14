@@ -3,19 +3,26 @@ import { ProgressScaleV3 } from '~/components/ui/progress-scale-v3';
 import { ProgressScale } from '~/components/ui/progress-scales';
 import { useRandomProgressValues } from '~/hooks/useProgressValue';
 
-export const NoScanFormulation = ({scaleName, scaleConnect}: {scaleName: string, scaleConnect: (isButtonPressed: boolean) => void}) => {
+export const NoScanFormulation = ({
+  scaleName,
+  scaleConnect,
+}: {
+  scaleName: string;
+  scaleConnect: (isButtonPressed: boolean) => void;
+}) => {
   const values = useRandomProgressValues(4, 1000);
   return (
     <div className="flex h-full w-full flex-col gap-4 pl-2 pr-4">
       <div className="flex items-center justify-between">
         <div
-          onClick={() => scaleConnect(true)} 
-          className="flex items-center gap-3">
+          onClick={() => scaleConnect(true)}
+          className="flex items-center gap-3"
+        >
           <div className="rounded-full bg-gray-800 p-3">
             <ClipboardMinus size={32} color="gray" />
           </div>
           <h1 className="text-[30px] font-semibold">
-            {scaleName ? scaleName : "Scale"}
+            {scaleName ? scaleName : 'Scale'}
           </h1>
         </div>
 

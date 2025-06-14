@@ -118,7 +118,6 @@ const PrintReportPage = forwardRef(
       // @ts-ignore
 
       <div className="p-4" ref={ref}>
-        
         <div className="border p-4">
           <div className="mb-4 flex items-start justify-between">
             <div className="flex flex-col">

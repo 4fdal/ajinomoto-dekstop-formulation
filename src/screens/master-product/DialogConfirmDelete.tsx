@@ -35,7 +35,9 @@ export function DialogConfirmDelete({
         queryClient.invalidateQueries({
           queryKey: ['master_products'], // revalidate cached data
         });
-        return toast.success('Successfully delete material');
+        return toast.success(
+          'Successfully delete material',
+        );
       }
 
       back();

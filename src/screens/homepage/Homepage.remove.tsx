@@ -7,7 +7,10 @@ import { useEffect, useState } from 'react';
 import { nightSleep } from '~/lib/helpers';
 import { FilterFormulation } from './FilterFormulation';
 import { Store } from 'tauri-plugin-store-api';
-import { connectToGuardWebSocket, connectToScaleWebSocket } from '~/actions/websocket.action';
+import {
+  connectToGuardWebSocket,
+  connectToScaleWebSocket,
+} from '~/actions/websocket.action';
 import { DetailFormulationByMaterialList } from './DetailFormulationByMaterialList';
 import { NoScanFormulation } from './NoScanFormulation';
 import { DialogApprovalProblem } from './DialogApprovalProblem';
@@ -89,15 +92,13 @@ export default function Homepage() {
       setScaleUnit,
       setScaleName,
       setScaleFractionalDigit,
-      isButtonPressed
+      isButtonPressed,
     );
-  }
+  };
 
   useEffect(() => {
     scaleConnect();
-    connectToGuardWebSocket(
-      setGuardedMaterial
-    )
+    connectToGuardWebSocket(setGuardedMaterial);
     handleDetectEnablePrinting();
     handleGetFractionalDigits();
     handleDetectEnableManualWorkOrder();
@@ -110,7 +111,6 @@ export default function Homepage() {
   return (
     <>
       <ContainerLayout>
-      
         {isExpandedSidebar && (
           <div className="hidden w-2/4 flex-col border-r pr-2 sm:flex">
             <FilterFormulation
@@ -141,7 +141,7 @@ export default function Homepage() {
             scaleConnect={scaleConnect}
           />
         ) : (
-          <NoScanFormulation 
+          <NoScanFormulation
             scaleName={scaleName}
             scaleConnect={scaleConnect}
           />

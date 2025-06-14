@@ -640,8 +640,16 @@ export const DetailFormulationByMaterialList = ({
           </div>
           <div>
             <ProgressScaleV3
-              minValue={parseFloat(selectedFormulationReportLines?.min?.toFixed(appFractionalDigit))}
-              maxValue={parseFloat(selectedFormulationReportLines?.max?.toFixed(appFractionalDigit))}
+              minValue={parseFloat(
+                selectedFormulationReportLines?.min?.toFixed(
+                  appFractionalDigit,
+                ),
+              )}
+              maxValue={parseFloat(
+                selectedFormulationReportLines?.max?.toFixed(
+                  appFractionalDigit,
+                ),
+              )}
               value={
                 isLoggedInAsAdmin ? 0 : currentScaleScore
               }
@@ -984,23 +992,31 @@ export const DetailFormulationByMaterialList = ({
                   disabled={
                     isEnableOverweightProtection &&
                     ((scaleValue ?? 0) >
-                      parseFloat(selectedFormulationReportLines.max?.toFixed(
-                        appFractionalDigit,
-                      )) || // Use nullish coalescing
+                      parseFloat(
+                        selectedFormulationReportLines.max?.toFixed(
+                          appFractionalDigit,
+                        ),
+                      ) || // Use nullish coalescing
                       (selectedFormulationReportLines.actualMass >
                         0 &&
-                        parseFloat(currentScaleScore.toFixed(
-                          appFractionalDigit,
-                        )) >
-                          parseFloat(selectedFormulationReportLines.max?.toFixed(
+                        parseFloat(
+                          currentScaleScore.toFixed(
                             appFractionalDigit,
-                          ))) ||
+                          ),
+                        ) >
+                          parseFloat(
+                            selectedFormulationReportLines.max?.toFixed(
+                              appFractionalDigit,
+                            ),
+                          )) ||
                       (selectedFormulationReportLines.status ==
                         1 &&
                         selectedFormulationReportLines.actualMass >
-                          parseFloat(selectedFormulationReportLines.max?.toFixed(
-                            appFractionalDigit,
-                          ))))
+                          parseFloat(
+                            selectedFormulationReportLines.max?.toFixed(
+                              appFractionalDigit,
+                            ),
+                          )))
                   }
                   onClick={() => mutate(currentScaleScore)}
                   className={cn(
